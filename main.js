@@ -1,10 +1,12 @@
 const express = require('express');
 const axios = require('axios');
+var cors = require('cors')
 const bodyParser = require('body-parser');
 
-const PORT = process.argv[2];
+const PORT = 3050;
 
 const app = express()
+app.use(cors())
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
@@ -14,7 +16,7 @@ app.get('/', (req, res) => {
 
 app.post('/fileupload', (req, res) => {
     console.log(req)
-    res.send(PORT);
+    res.sendStatus(200);
 })
 
 app.listen(PORT, () => {
