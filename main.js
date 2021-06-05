@@ -22,7 +22,17 @@ cloudinary.config({
     cloud_name: "dyp8wrgbw",
     api_key: "315461241188818",
     api_secret: "r-sNPDYhLcLIMicS2UQ8XwatvsI"
-  });
+});
+
+const rabbitSettings = {
+    protocol: 'amqp',
+    hostname: 'localhost',
+    port: 5680,
+    username: 'diegog',
+    password: 'guest',
+    vhost: '/',
+    authMechanism: ['PLAIN', 'AMQPLAIN', 'EXTERNAL']
+}
 
 app.get('/', (req, res) => {
     console.log('llega')
@@ -51,8 +61,19 @@ app.post('/fileupload', upload.any(), (req, res) => {
     res.sendStatus(200);
 })
 
-function sendData(data){
+async function sendData(data){
     let myJson = flatted.stringify(data);
+    /*
+    try{
+        console.log('intenta...')
+        const conn = await amqp.connect(rabbitSettings);
+        console.log('exito')
+    }catch(e){
+        console.log('Error ->' ,e)
+        console.log('falla :c')
+    }
+    */
+    
     amqp.connect('amqp://localhost', function (error0, connection) {
         if (error0) {
             throw error0;
@@ -74,6 +95,7 @@ function sendData(data){
             connection.close();
         }, 1500);
     });
+    
 }
 /*
 app.post('/fileupload', (req, res) => {
